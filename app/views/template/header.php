@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PIPPolindra <?= $data['judul']; ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .navbar-brand {
             font-weight: bold;
@@ -25,6 +25,11 @@
             max-width: 120px;
         }
 
+        .navbar-text {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
         @media (max-width: 576px) {
             .logo-container img {
                 max-width: 80px;
@@ -32,7 +37,12 @@
             }
 
             .navbar-brand {
-                font-size: 1rem;
+                font-size: 0.9rem;
+                text-align: center;
+            }
+
+            .navbar-text {
+                font-size: 0.8rem;
                 text-align: center;
             }
         }
@@ -40,44 +50,30 @@
 </head>
 
 <body>
-
     <nav class="navbar navbar-expand-lg bg-primary navbar-dark">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-3">
-                    <!-- Logo -->
-                    <div class="logo-container bg-white rounded-5 p-1 align-items-center justify-content-center mt-3">
-                        <img src="<?= BASEURL; ?>/img/Polindra.png" alt="Logo Polindra" class="img-fluid  ">
-                    </div>
+        <div class="container align-items-center">
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="<?= BASEURL; ?>/home">
+                <div class="logo-container bg-white rounded-5 p-1 me-2">
+                    <img src="<?= BASEURL; ?>/img/Polindra.png" alt="Logo Polindra" class="img-fluid">
                 </div>
-                <div class="col-sm-9">
-                    <div class="row">
-                        <div class="col-sm-6 col-sm-11">
-                            <!-- Teks Navbar -->
-                            <a class="navbar-brand text-white ms-2 " href="<?= BASEURL; ?>/beranda">
-                                PUSAT INFORMASI PRESTASI
+                <span class="text-white navbar-text">
+                    PUSAT INFORMASI PRESTASI<br>Politeknik Negeri Indramayu
+                </span>
+            </a>
 
-                            </a>
-                            <!-- Tombol Toggle -->
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
+            <!-- Tombol Toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                            <!-- Link Navigasi -->
-                            <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
-                                <div class="navbar-nav">
-                                    <a class="nav-link <?= $data['judul'] == 'Home' ? 'active' : ''; ?>" href="<?= BASEURL; ?>/beranda">Home</a>
-                                    <a class="nav-link <?= $data['judul'] == 'Kompetisi' ? 'active' : ''; ?>" href="<?= BASEURL; ?>/kompetisi">Kompetisi</a>
-                                    <a class="nav-link <?= $data['judul'] == 'Prestasi' ? 'active' : ''; ?>" href="<?= BASEURL; ?>/prestasi">Prestasi</a>
-                                    <a class="nav-link <?= $data['judul'] == 'Pengumuman' ? 'active' : ''; ?>" href="<?= BASEURL; ?>/pengumuman">Pengumuman</a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+            <!-- Link Navigasi -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link <?= $data['judul'] == 'Home' ? 'active' : ''; ?>" href="<?= BASEURL; ?>/home">Home</a>
+                    <a class="nav-link <?= $data['judul'] == 'Kompetisi' ? 'active' : ''; ?>" href="<?= BASEURL; ?>/kompetisi">Kompetisi</a>
                 </div>
             </div>
-
         </div>
     </nav>
 
