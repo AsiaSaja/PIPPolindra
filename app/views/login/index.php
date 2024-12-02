@@ -17,7 +17,6 @@
             min-height: 100vh;
         }
 
-        /* Container */
         .container {
             width: 300px;
             padding: 20px;
@@ -26,14 +25,12 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        /* Header */
         h2 {
             text-align: center;
             margin-bottom: 20px;
             color: #333;
         }
 
-        /* Input Fields */
         input[type="text"],
         input[type="password"] {
             width: 100%;
@@ -44,7 +41,6 @@
             box-sizing: border-box;
         }
 
-        /* Button */
         button {
             background-color: #4CAF50;
             color: white;
@@ -61,7 +57,6 @@
             background-color: #45a049;
         }
 
-        /* Links */
         a {
             color: #4CAF50;
             text-align: center;
@@ -74,7 +69,6 @@
             text-decoration: underline;
         }
 
-        /* Error Message */
         .error-message {
             color: red;
             font-size: 14px;
@@ -82,7 +76,6 @@
             margin-bottom: 15px;
         }
 
-        /* Instructions */
         .instructions {
             text-align: center;
             font-size: 14px;
@@ -100,9 +93,9 @@
         <?php if (!empty($data['error'])): ?>
             <p class="error-message"><?= htmlspecialchars($data['error']); ?></p>
         <?php endif; ?>
+
         <!-- Form Login -->
         <form action="<?= BASEURL; ?>/login/proses" method="POST">
-            <!-- Input NIM -->
             <div>
                 <label for="username">Akun Pengguna</label>
                 <input 
@@ -111,10 +104,11 @@
                     name="username" 
                     placeholder="Masukkan username yang terdaftar" 
                     required 
+                    minlength="3" 
+                    maxlength="50"
                 >
             </div>
 
-            <!-- Input Password -->
             <div>
                 <label for="password">Password</label>
                 <input 
@@ -123,20 +117,24 @@
                     name="password" 
                     placeholder="Masukkan Password" 
                     required 
+                    minlength="6" 
+                    maxlength="50"
                 >
             </div>
 
-            <!-- Tombol Login -->
-            <button type="submit">Login</button>
+            <button type="submit">
+                <span id="button-text">Login</span>
+                <span id="button-loader" style="display: none;">Loading...</span>
+            </button>
         </form>
 
-        <!-- Lupa Password -->
         <a href="<?= BASEURL; ?>">Lupa Password?</a>
     </div>
     <script>
         document.querySelector('form').addEventListener('submit', function() {
-            document.querySelector('button').textContent = "Logging in..."; // Update button text to indicate loading
-            document.querySelector('button').disabled = true; // Disable the button
+            document.getElementById('button-text').style.display = 'none'; 
+            document.getElementById('button-loader').style.display = 'inline-block'; 
+            document.querySelector('button').disabled = true;
         });
     </script>
 </body>

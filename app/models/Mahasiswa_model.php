@@ -16,20 +16,19 @@ class Mahasiswa_model {
     }
 
     // Fungsi untuk mendapatkan user berdasarkan NIM dan password
-    public function Login($nim, $password)
-    {
-        // Hash password jika diperlukan (misalnya MD5)
-        $hashedPassword = $password;
+    // public function Login($nim, $password)
+    // {
+        
+    //     $hashedPassword = $password;
 
-        // Query untuk mencari mahasiswa
-        $query = 'SELECT * FROM ' . $this->table . ' WHERE nim = :nim AND password = :password';
-        $this->db->query($query); // Gunakan $this->db, bukan static::$db
+        
+    //     $query = 'SELECT * FROM ' . $this->table . ' WHERE nim = :nim AND password = :password';
+    //     $this->db->query($query); 
+        
+    //     $this->db->bind(':nim', $nim);
+    //     $this->db->bind(':password', $hashedPassword);
 
-        // Bind parameter
-        $this->db->bind(':nim', $nim);
-        $this->db->bind(':password', $hashedPassword);
-
-        // Ambil data user
-        return $this->db->single();
-    }
+       
+    //     return $this->db->single();
+    // }
 }
