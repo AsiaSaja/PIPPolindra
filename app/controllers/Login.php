@@ -27,40 +27,35 @@ class Login extends Controller
             // Ambil data dari form login
             $username = htmlspecialchars(trim($_POST['username']));
             $password = htmlspecialchars(trim($_POST['password']));
-
-            // Debugging input
-            error_log("Form Input - Username: $username");
-            error_log("Form Input - Password: $password");
-
+    
             // Validasi input
-            if (empty($username)) {
-                header('Location: ' . BASEURL . '/login?error=Username+tidak+boleh+kosong');
+            if (empty($username) || empty($password)) {
+                header('Location: ' . BASEURL . '/login?error=Semua+kolom+harus+diisi');
                 exit;
             }
-
-            if (empty($password)) {
-                header('Location: ' . BASEURL . '/login?error=Password+tidak+boleh+kosong');
-                exit;
-            }
-
+    
             // Validasi login melalui model Admin_model
             $adminModel = $this->model('Admin_model');
-            $admin = $adminModel->login($username, $password);
-
+            $admin = $adminModel->getAdminByUsername($username);
+    
             if ($admin) {
-                // Mulai session dan simpan data admin jika login berhasil
-                if (session_status() === PHP_SESSION_NONE) {
-                    session_start();
+                // Verifikasi password menggunakan password_verify
+                if (password_verify($password, $admin['password'])) {
+                    // Mulai session dan simpan data admin jika login berhasil
+                    if (session_status() === PHP_SESSION_NONE) {
+                        session_start();
+                    }
+    
+                    $_SESSION['admin'] = $admin; // Simpan data admin di session
+                    header('Location: ' . BASEURL . '/admin/dashboard');
+                    exit;
+                } else {
+                    // Password salah
+                    header('Location: ' . BASEURL . '/login?error=Username+atau+password+salah');
+                    exit;
                 }
-
-                $_SESSION['admin'] = $admin; // Simpan data admin di session
-                header('Location: ' . BASEURL . '/admin/dashboard');
-                exit;
             } else {
-                // Log kesalahan login untuk debugging
-                error_log("Login gagal untuk username: $username", 0);
-
-                // Login gagal, arahkan kembali ke halaman login dengan pesan error
+                // Username tidak ditemukan
                 header('Location: ' . BASEURL . '/login?error=Username+atau+password+salah');
                 exit;
             }
@@ -70,6 +65,66 @@ class Login extends Controller
             exit;
         }
     }
+    
+
+    public function register()
+    {
+        $data['title'] = 'Register';
+        $data['error'] = isset($_GET['error']) ? htmlspecialchars($_GET['error']) : ''; // Kirim pesan error ke view
+        $this->view('login/register', $data); // Tampilkan view register
+    }
+
+    public function prosesRegister()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $username = htmlspecialchars(trim($_POST['username']));
+            $password = htmlspecialchars(trim($_POST['password']));
+            $confirmPassword = htmlspecialchars(trim($_POST['confirm_password']));
+    
+            // Validasi input
+            if (empty($username) || empty($password) || empty($confirmPassword)) {
+                header('Location: ' . BASEURL . '/login/register?error=Semua+kolom+harus+diisi');
+                exit;
+            }
+    
+            if ($password !== $confirmPassword) {
+                header('Location: ' . BASEURL . '/login/register?error=Konfirmasi+password+tidak+sesuai');
+                exit;
+            }
+    
+            // Hash password
+            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    
+            // Debugging untuk melihat input
+            error_log("Username: $username");
+            error_log("Password: $password");
+            error_log("Hashed Password: $hashedPassword");
+    
+            // Panggil model Admin untuk proses registrasi
+            $adminModel = $this->model('Admin_model');
+            $registerResult = $adminModel->register($username, $hashedPassword);
+    
+            // Debugging untuk hasil register
+            // error_log("Register Result: " . json_encode($registerResult));
+    
+            if ($registerResult) {
+                // Jika berhasil, redirect ke halaman login dengan pesan sukses
+                header('Location: ' . BASEURL . '/login?success=Registrasi+berhasil.+Silahkan+login');
+                exit;
+            } else {
+                // Jika gagal, redirect ke halaman register dengan pesan error
+                header('Location: ' . BASEURL . '/login/register?error=Username+sudah+digunakan');
+                exit;
+            }
+        } else {
+            // Jika request bukan POST, redirect ke halaman register
+            header('Location: ' . BASEURL . '/login/register');
+            exit;
+        }
+    }
+    
+    
+
 
     public function logout()
     {

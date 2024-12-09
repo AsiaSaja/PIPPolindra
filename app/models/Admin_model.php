@@ -55,6 +55,19 @@ class Admin_model
         $this->db->query($query);
         return $this->db->resultSet(); // Mengembalikan semua hasil query
     }
+    /**
+     * Ambil data admin berdasarkan username
+     * @param string $username
+     * @return array|bool - Mengembalikan data admin jika ditemukan, atau false jika tidak ada
+     */
+    public function getAdminByUsername($username)
+    {
+        $query = "SELECT * FROM $this->table WHERE username = :username";
+        $this->db->query($query);
+        $this->db->bind(':username', $username);
+        return $this->db->single(); // Mengembalikan satu baris hasil query
+    }
+
 
     /**
      * Tambah Admin
@@ -70,5 +83,33 @@ class Admin_model
         $this->db->bind(':password', $data['password']); // Pastikan hashing password jika perlu
 
         return $this->db->execute();
+    }
+
+    /**
+     * Fungsi untuk registrasi admin baru
+     * @param string $username
+     * @param string $hashedPassword
+     * @return bool - Mengembalikan true jika berhasil, false jika gagal
+     */
+    public function register($username, $hashedPassword)
+    {
+        // Periksa apakah username sudah ada
+        $query = "SELECT * FROM $this->table WHERE username = :username";
+        $this->db->query($query);
+        $this->db->bind(':username', $username);
+        $this->db->execute();
+        
+        if ($this->db->rowCount() > 0) {
+            return false; // Username sudah ada
+        }
+
+        // Insert data baru
+        $query = "INSERT INTO $this->table (username, password) VALUES (:username, :password)";
+        $this->db->query($query);
+        $this->db->bind(':username', $username);
+        $this->db->bind(':password', $hashedPassword);
+
+        $this->db->execute();
+        return true; // Mengembalikan true jika berhasil
     }
 }

@@ -86,23 +86,23 @@
 </head>
 <body>
     <div class="container">
-        <h2>Masuk dan Verifikasi</h2>
-        <p class="instructions">Silahkan Login menggunakan akun admin yang Anda miliki</p>
+        <h2>Daftar Admin Baru</h2>
+        <p class="instructions">Silahkan isi formulir untuk mendaftarkan akun admin baru</p>
 
         <!-- Pesan Error -->
         <?php if (!empty($data['error'])): ?>
             <p class="error-message"><?= htmlspecialchars($data['error']); ?></p>
         <?php endif; ?>
 
-        <!-- Form Login -->
-        <form action="<?= BASEURL; ?>/login/proses" method="POST">
+        <!-- Form Register -->
+        <form action="<?= BASEURL; ?>/login/prosesRegister" method="POST">
             <div>
-                <label for="username">Akun Pengguna</label>
+                <label for="username">Username</label>
                 <input 
                     type="text" 
                     id="username" 
                     name="username" 
-                    placeholder="Masukkan username yang terdaftar" 
+                    placeholder="Masukkan username baru" 
                     required 
                     minlength="3" 
                     maxlength="50"
@@ -115,7 +115,20 @@
                     type="password" 
                     id="password" 
                     name="password" 
-                    placeholder="Masukkan Password" 
+                    placeholder="Masukkan password baru" 
+                    required 
+                    minlength="6" 
+                    maxlength="50"
+                >
+            </div>
+
+            <div>
+                <label for="confirm_password">Konfirmasi Password</label>
+                <input 
+                    type="password" 
+                    id="confirm_password" 
+                    name="confirm_password" 
+                    placeholder="Ulangi password baru" 
                     required 
                     minlength="6" 
                     maxlength="50"
@@ -123,12 +136,12 @@
             </div>
 
             <button type="submit">
-                <span id="button-text">Login</span>
+                <span id="button-text">Register</span>
                 <span id="button-loader" style="display: none;">Loading...</span>
             </button>
         </form>
 
-        <a href="<?= BASEURL; ?>/login/register">Register</a>
+        <a href="<?= BASEURL; ?>/login">Kembali ke Login</a>
     </div>
     <script>
         document.querySelector('form').addEventListener('submit', function() {
