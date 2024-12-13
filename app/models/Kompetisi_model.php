@@ -27,10 +27,10 @@ class Kompetisi_model {
     // Tambah data kompetisi
     public function tambahKompetisi($data)
     {
-        $query = "INSERT INTO $this->table (nama, deskripsi, tanggal, lokasi) 
+        $query = "INSERT INTO $this->table (nama_kompetisi, deskripsi, tanggal, lokasi) 
                   VALUES (:nama, :deskripsi, :tanggal, :lokasi)";
         $this->db->query($query);
-        $this->db->bind('nama', $data['nama']);
+        $this->db->bind('nama_kompetisi', $data['nama_kompetisi']);
         $this->db->bind('deskripsi', $data['deskripsi']);
         $this->db->bind('tanggal', $data['tanggal']);
         $this->db->bind('lokasi', $data['lokasi']);
@@ -42,14 +42,14 @@ class Kompetisi_model {
     public function updateKompetisi($data)
     {
         $query = "UPDATE $this->table SET 
-                    nama = :nama, 
+                    nama_kompetisi = :nama_kompetisi, 
                     deskripsi = :deskripsi, 
                     tanggal = :tanggal, 
                     lokasi = :lokasi 
                   WHERE id = :id";
         $this->db->query($query);
         $this->db->bind('id', $data['id']);
-        $this->db->bind('nama', $data['nama']);
+        $this->db->bind('nama_kompetisi', $data['nama_kompetisi']);
         $this->db->bind('deskripsi', $data['deskripsi']);
         $this->db->bind('tanggal', $data['tanggal']);
         $this->db->bind('lokasi', $data['lokasi']);

@@ -55,9 +55,9 @@
     <div class="sidebar">
         <div class="brand">Admin Dashboard</div>
         <a href="<?= BASEURL; ?>/admin/dashboard" class="active">Dashboard</a>
-        <a href="<?= BASEURL; ?>/admin/mahasiswa">Mahasiswa</a>
-        <a href="<?= BASEURL; ?>/admin/prestasi">Prestasi</a>
-        <a href="<?= BASEURL; ?>/admin/kompetisi">Kompetisi</a>
+        <a href="<?= BASEURL; ?>/admin/kelola_mahasiswa">Mahasiswa</a>
+        <a href="<?= BASEURL; ?>/admin/kelola_prestasi">Prestasi</a>
+        <a href="<?= BASEURL; ?>/admin/kelola_kompetisi">Kompetisi</a>
         <a href="<?= BASEURL; ?>/login/logout">Logout</a>
     </div>
 

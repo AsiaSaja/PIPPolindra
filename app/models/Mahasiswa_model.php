@@ -9,60 +9,101 @@ class Mahasiswa_model {
         $this->db = new Database; // Menggunakan database wrapper
     }
 
-    // Ambil semua data mahasiswa
+    // ============================
+    // Ambil Semua Data Mahasiswa
+    // ============================
     public function getAllMahasiswa()
     {
-        $this->db->query("SELECT * FROM $this->table");
-        return $this->db->resultSet();
+        try {
+            $this->db->query("SELECT * FROM $this->table");
+            return $this->db->resultSet();
+        } catch (Exception $e) {
+            // Log error jika perlu
+            return false; // Return false jika terjadi kesalahan
+        }
     }
 
-    // Ambil data mahasiswa berdasarkan ID
+    // ============================
+    // Ambil Data Mahasiswa Berdasarkan ID
+    // ============================
     public function getMahasiswaById($id)
     {
-        $this->db->query("SELECT * FROM $this->table WHERE id = :id");
-        $this->db->bind('id', $id);
-        return $this->db->single();
+        try {
+            $this->db->query("SELECT * FROM $this->table WHERE id = :id");
+            $this->db->bind('id', $id);
+            return $this->db->single();
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
-    // Tambah data mahasiswa
+    // ============================
+    // Tambah Data Mahasiswa
+    // ============================
     public function tambahMahasiswa($data)
     {
-        $query = "INSERT INTO $this->table (nama, nim, prodi, angkatan) 
-                  VALUES (:nama, :nim, :prodi, :angkatan)";
-        $this->db->query($query);
-        $this->db->bind('nama', $data['nama']);
-        $this->db->bind('nim', $data['nim']);
-        $this->db->bind('prodi', $data['prodi']);
-        $this->db->bind('angkatan', $data['angkatan']);
+        // Validasi input
+        if (empty($data['nama']) || empty($data['nim']) || empty($data['prodi']) || empty($data['angkatan'])) {
+            return false; // Jika ada input kosong, langsung return false
+        }
 
-        return $this->db->execute();
+        try {
+            $query = "INSERT INTO $this->table (nama, nim, prodi, angkatan) 
+                      VALUES (:nama, :nim, :prodi, :angkatan)";
+            $this->db->query($query);
+            $this->db->bind('nama', htmlspecialchars($data['nama']));
+            $this->db->bind('nim', htmlspecialchars($data['nim']));
+            $this->db->bind('prodi', htmlspecialchars($data['prodi']));
+            $this->db->bind('angkatan', htmlspecialchars($data['angkatan']));
+
+            return $this->db->execute();
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
-    // Ubah data mahasiswa
-    public function updateMahasiswa($data)
+    // ============================
+    // Ubah Data Mahasiswa
+    // ============================
+    public function updateMahasiswa($data, $id)
     {
-        $query = "UPDATE $this->table SET 
-                    nama = :nama, 
-                    nim = :nim, 
-                    prodi = :prodi, 
-                    angkatan = :angkatan 
-                  WHERE id = :id";
-        $this->db->query($query);
-        $this->db->bind('id', $data['id']);
-        $this->db->bind('nama', $data['nama']);
-        $this->db->bind('nim', $data['nim']);
-        $this->db->bind('prodi', $data['prodi']);
-        $this->db->bind('angkatan', $data['angkatan']);
+        // Validasi input
+        if (empty($data['nama']) || empty($data['nim']) || empty($data['prodi']) || empty($data['angkatan'])) {
+            return false; // Jika ada input kosong, langsung return false
+        }
 
-        return $this->db->execute();
+        try {
+            $query = "UPDATE $this->table SET 
+                        nama = :nama, 
+                        nim = :nim, 
+                        prodi = :prodi, 
+                        angkatan = :angkatan 
+                      WHERE id = :id";
+            $this->db->query($query);
+            $this->db->bind('id', $id);
+            $this->db->bind('nama', htmlspecialchars($data['nama']));
+            $this->db->bind('nim', htmlspecialchars($data['nim']));
+            $this->db->bind('prodi', htmlspecialchars($data['prodi']));
+            $this->db->bind('angkatan', htmlspecialchars($data['angkatan']));
+
+            return $this->db->execute();
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
-    // Hapus data mahasiswa
+    // ============================
+    // Hapus Data Mahasiswa
+    // ============================
     public function deleteMahasiswa($id)
     {
-        $this->db->query("DELETE FROM $this->table WHERE id = :id");
-        $this->db->bind('id', $id);
+        try {
+            $this->db->query("DELETE FROM $this->table WHERE id = :id");
+            $this->db->bind('id', $id);
 
-        return $this->db->execute();
+            return $this->db->execute();
+        } catch (Exception $e) {
+            return false;
+        }
     }
 }
